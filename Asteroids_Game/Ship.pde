@@ -1,12 +1,16 @@
 class Ship extends GameObject {
   
   PVector direction;
+  int shotTimer, threshold;
   
   Ship() {
     lives = 3;
     location = new PVector(width/2, height/2);
     velocity = new PVector(0, 0);
     direction = new PVector(0, -0.1);
+    
+    shotTimer = 0;
+    threshold = 10;
   }
   
   void show() {
@@ -26,18 +30,24 @@ class Ship extends GameObject {
     
     popMatrix();
   }
-  
+    
   void act() {
     super.act();
+    
+    shotTimer++;
 
     if (upkey) velocity.add(direction);
     if (downkey) velocity.sub(direction);
     if (leftkey) direction.rotate(-radians(5));
-    if (rightkey) direction.rotate(radians(5)); 
-    if (spacekey) myObjects.add(new Bullet());
+    if (rightkey) direction.rotate(radians(5));
+    if (spacekey && shotTimer > threshold) {
+      myObjects.add(new Bullet());
+      
+      shotTimer = 0;
+    }
     
-    if (velocity.mag() > 5) {
-      velocity.setMag(5);   
+    if (velocity.mag() > 3) {
+      velocity.setMag(3);   
     }
   }
   
