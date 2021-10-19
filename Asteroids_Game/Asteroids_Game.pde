@@ -12,7 +12,6 @@ int asteroidTimer = 0;
 int timepassed = 0;
 
 //Colour Palette
-
 color NRed1 = #a60000;
 color NRed2 = #bd0000;
 color NRed3 = #cb0000;
@@ -31,45 +30,86 @@ color NBlue3 = #2e2e99;
 color NBlue4 = #3e3ecc;
 color NBlue5 = #4d4dff;
 
+//Gray colour palette
+
+color p1 = #444941;
+color p2 = #5F7A61;
+color p3 = #D5EEBB;
+color p4 = #7FC8A9;
+
+//Font
+PFont font1;
+
+//Image
+PImage background1;
+
+//Mode Framework
+int mode = 0;
+final int start = 0;
+final int playing = 1;
+final int paused = 2;
+final int over = 3;
+
+//=== Start ===
+
+Button start1;
+  
+//=== Playing ===
+
+Pui myUI;
+  
+//=== Paused ===
+  
+//=== Over ===
+  
+//==============================================================================
+
 void setup() {
   size(800, 800, FX2D);
   imageMode(CENTER);
+    
+  font1 = createFont("font1.ttf", 128);
+  textFont(font1);
+  textAlign(CENTER, CENTER);
   
+  background1 = loadImage("background.jpg");
+  background1.resize(height*2*16/9, height*2);
+    
+  myObjects = new ArrayList<GameObject>();
+  
+  //=== Start ===
+  
+  start1 = new Button(1, width/2, height/2, p3, p2, 250, 15);
+  
+  //=== Playing ===
+
   myShip = new Ship();
   
-  myObjects = new ArrayList<GameObject>();
-  myObjects.add(new Asteroid());
+  myUI = new Pui();
+  
+  //=== Paused ===
+  
+  //=== Over ===
+  
 }
 
 void draw() {
   background(0);
   
-  int i = 0;
-  while (i < myObjects.size()) {
-    GameObject myObj = myObjects.get(i);
-    myObj.show();
-    myObj.act();
-
-    if (myObj.lives <= 0) {
-      myObjects.remove(i);
-    } else {
-      i++;
-    }    
-  } 
-  
-  myShip.show();
-  myShip.act();
-  
-  //Asteroid spawning
-  asteroidTimer++;
-  if (asteroidTimer == 240) {
-    asteroidTimer = 0;
-    myObjects.add(new Asteroid());
+  switch (mode) {
+    case start:
+      startg();
+      break;
+    case playing:
+      playing();
+      break;
+    case paused:
+      paused();
+      break;
+    case over:
+      over();
+      break;
   }
-  
-  //Game Timer
-  timepassed++;
-  println(timepassed/60);
 }
 
 void keyPressed() {

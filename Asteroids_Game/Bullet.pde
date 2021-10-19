@@ -8,7 +8,7 @@ class Bullet extends GameObject{
   }
   
   void show() {
-    stroke(255, 255, 255, map(lives, 0, 90, 0, 255));
+    stroke(p3, map(lives, 0, 90, 0, 255));
     noFill();
     ellipse(location.x, location.y, 10, 10);
   }

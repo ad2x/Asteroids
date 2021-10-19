@@ -3,6 +3,8 @@ class Asteroid extends GameObject {
   Asteroid() {
     lives = 1;
     
+    //Randomizes asteroid spawn
+    
     int r = (int) random(0, 4) + 1;
     
     if (r == 1) {
