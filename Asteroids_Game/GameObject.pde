@@ -5,6 +5,10 @@ class GameObject {
   PVector velocity;
   int size;
   
+  //Only used for ships
+  int shotTimer;
+  boolean side;
+  
   GameObject() {
     
   }

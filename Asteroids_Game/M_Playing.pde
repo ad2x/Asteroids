@@ -1,4 +1,4 @@
-void playing () {
+void playing () {  
   int i = 0;
   while (i < myObjects.size()) {
     GameObject myObj = myObjects.get(i);
@@ -17,13 +17,23 @@ void playing () {
   
   //Asteroid spawning
   asteroidTimer++;
-  if (asteroidTimer == 240) {
+  if (asteroidTimer == 150) {
     asteroidTimer = 0;
     myObjects.add(new Asteroid());
   }
   
-  //Game Timer
-  timepassed++;
+  //Enemy ship spawning
+  eshipTimer++;
+  if (eshipTimer == 750) {
+    eshipTimer = 0;
+    myObjects.add(new enemyShip());
+  }
   
-  myUI.show(70, 70);
+  //Game Timer
+  timePassed++;
+  
+  myLives.show(70, 70);
+  myTimer.show(width/2, 7*height/8, width/2, height/16);
+  
+  myScore.show(width - 115, 45);
 }

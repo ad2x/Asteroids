@@ -8,8 +8,12 @@ ArrayList<GameObject> myObjects;
 //Asteroid spawns
 int asteroidTimer = 0;
 
+//Enemy ship spawns
+int eshipTimer = 0;
+
 //Game timer
-int timepassed = 0;
+int timePassed = 0;
+int initTime = 0;
 
 //Colour Palette
 color NRed1 = #a60000;
@@ -30,12 +34,16 @@ color NBlue3 = #2e2e99;
 color NBlue4 = #3e3ecc;
 color NBlue5 = #4d4dff;
 
-//Gray colour palette
+color Black = #000000;
+color White = #FFFFFF;
 
-color p1 = #444941;
-color p2 = #5F7A61;
-color p3 = #D5EEBB;
-color p4 = #7FC8A9;
+//Main palette
+
+color p1 = #E7EFC5;
+color p2 = #BFD7B5;
+color p3 = #A3C4BC;
+color p4 = #413C58;
+color p5 = #F2DDA4;
 
 //Font
 PFont font1;
@@ -56,11 +64,17 @@ Button start1;
   
 //=== Playing ===
 
-Pui myUI;
+Lives myLives;
+Timer myTimer;
+scoreCounter myScore;
+int score;
+int highscore = 0;
   
 //=== Paused ===
   
 //=== Over ===
+
+Button over1;
   
 //==============================================================================
 
@@ -78,18 +92,23 @@ void setup() {
   myObjects = new ArrayList<GameObject>();
   
   //=== Start ===
-  
-  start1 = new Button(1, width/2, height/2, p3, p2, 250, 15);
+  start1 = new Button(playing, width/2, height/2, p3, p2, 250, 15);
   
   //=== Playing ===
 
-  myShip = new Ship();
+  //I honestly can't remember why I specifically wanted to not add this to the array
+  myShip = new Ship(); 
   
-  myUI = new Pui();
+  myLives = new Lives();
+  
+  myTimer = new Timer();
+  
+  myScore = new scoreCounter();
   
   //=== Paused ===
   
   //=== Over ===
+  over1 = new Button(playing, width/2, 3*height/4, p3, p2, 300, 100, 15);
   
 }
 
@@ -118,6 +137,13 @@ void keyPressed() {
   if (key == 'A') leftkey = true;
   if (key == 'D') rightkey = true;
   if (key == ' ') spacekey = true;
+  if (keyCode == 27 && mode == playing) {
+    key = 0;
+    mode = paused;
+  } else if (keyCode == 27 && mode == paused) {
+    key = 0;
+    mode = playing;
+  }
 }
 
 void keyReleased() {

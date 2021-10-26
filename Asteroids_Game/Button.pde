@@ -48,19 +48,22 @@ class Button {
     strokeWeight(sw);
     
     //Blends inner and outer to make new hovered and pressed colours without having to seperately add them
+    //I spent so much time trying to figure out how to do this with blendColor() before realizing lerpColor did what I thought blendColor() was supposed to do -_-
     
     if (shape == true) {
       if (dist(mouseX, mouseY, x, y) <= sx/2) {
-          //Wondered what would happen if I put a blend into a blend and it turned out well
-          stroke(blendColor(blendColor(inner, outer, DIFFERENCE), outer, MULTIPLY));
+        stroke(lerpColor(outer, White, 0.3));
         if (mousePressed) {
-          stroke(blendColor(inner, outer, DIFFERENCE));
+          stroke(lerpColor(outer, Black, 0.3));
         }
       }
       ellipse(0, 0, sx, sx);
-    } else {
-      if (mouseX >= -sx/2 && mouseX <= sx/2 && mouseY >= -sy/2 && mouseY <= sy/2) {
-        blendColor(inner, outer, DARKEST);
+    } else if (shape == false) {
+      if (mouseX >= x-sx/2 && mouseX <= x+sx/2 && mouseY >= y-sy/2 && mouseY <= y+sy/2) {
+        stroke(lerpColor(outer, White, 0.3));
+        if (mousePressed) {
+          stroke(lerpColor(outer, Black, 0.3));
+        }
       }
       rect(-sx/2, -sy/2, sx, sy);
     }
@@ -73,7 +76,25 @@ class Button {
   }
   
   public void click () {
-    if (shape == true && dist(mouseX, mouseY, x, y) <= sx/2) mode = emode;
-    if (shape == false && mouseX >= -sx/2 && mouseX <= sx/2 && mouseY >= -sy/2 && mouseY <= sy/2) mode = emode;
+    if (shape == true && dist(mouseX, mouseY, x, y) <= sx/2) {
+      mode = emode;
+      timePassed = 0;
+      initTime = 0;
+    }
+    if (shape == false && mouseX >= x-sx/2 && mouseX <= x+sx/2 && mouseY >= y-sy/2 && mouseY <= y+sy/2) {
+      mode = emode;
+      timePassed = 0;
+      initTime = 0;
+    }
+  }
+  
+  public boolean pressed () {
+    if (shape == true && shape == true && dist(mouseX, mouseY, x, y) <= sx/2) {
+      return true;
+    } else if (shape == false && shape == false && mouseX >= x-sx/2 && mouseX <= x+sx/2 && mouseY >= y-sy/2 && mouseY <= y+sy/2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
